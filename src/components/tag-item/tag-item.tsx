@@ -1,8 +1,7 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { MdClear, MdLocalOffer } from "react-icons/md";
-import { Button, Card, CardBody, CardText, CardTitle } from "reactstrap";
+import { Button, Card, CardBody } from "reactstrap";
 import { Tag } from "../../shared/models/tag.model";
-import { useResizeDetector } from "react-resize-detector";
 
 import "./tag-item.scss";
 
@@ -59,8 +58,6 @@ export const TagItem: FC<ITagItemProps> = ({ tag, updateTag, removeTag }) => {
             >
               <MdClear />
             </Button>
-            <CardTitle className="mb-3" tag="h3"></CardTitle>
-            <CardText className="mb-4"></CardText>
             <div className="input-group-merge input-group tag-legend">
               <div className="input-group-prepend">
                 <span className="input-group-text">

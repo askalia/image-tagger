@@ -21,5 +21,30 @@
       width: 50%;
       height: 50px;
     }
+
+    /*div.actions {
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-direction: row;
+      -moz-flex-direction: row;
+      flex: 2;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: stretch;
+      flex-wrap: wrap;
+      background-color: #333;
+    }*/
   }
+}
+
+div.actions {
+  display: flex;
+  align-items: s;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 28vw;
+  margin-top: 20px;
 }

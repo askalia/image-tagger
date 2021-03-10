@@ -1,16 +1,7 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef } from "react";
 import { MdLocalOffer } from "react-icons/md";
 import shortid from "shortid";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardImg,
-  CardText,
-  CardTitle,
-  Input,
-} from "reactstrap";
+import { Card, CardBody } from "reactstrap";
 import { TagCoordinates } from "../../shared/models/tag-coordinates.model";
 import { Tag } from "../../shared/models/tag.model";
 
@@ -48,10 +39,6 @@ export const TagFactory: FC<ITagFactoryProps> = ({ coordinates, addTag }) => {
           }}
         >
           <CardBody>
-            <CardTitle className="mb-3" tag="h3">
-              
-            </CardTitle>
-            <CardText className="mb-4"></CardText>
             <div className="input-group-merge input-group tag-legend">
               <div className="input-group-prepend">
                 <span className="input-group-text">
