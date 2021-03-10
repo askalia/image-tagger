@@ -18,8 +18,11 @@
   border-bottom-right-radius: 0;
   overflow: auto;
   /*&:hover {
-    cursor: move;
-  }*/
+      cursor: move;
+    }*/
+
+    
+
 
   .tag-legend {
     position: absolute;
@@ -30,5 +33,15 @@
     &:focus-within .input-group-prepend .input-group-text svg {
       fill: black;
     }
+  }
+
+  .remove-tag {
+      position: absolute;
+      right:-1px;
+      top: 0;
+      /*visibility: hidden;*/
+  }
+  &:hover .remove-tag {
+     visibility: visible;
   }
 }
