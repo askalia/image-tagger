@@ -8,6 +8,7 @@ import "./image-holder.scss";
 import { ImagePreview } from "./image-preview/image-preview";
 import { ImageUrlBox } from "./image-url-box/image-url-box";
 import { ResetImageAction } from "./reset-image-action/reset-image-action";
+import { SaveToFileAction } from "./save-to-file-action/save-to-file-action";
 
 interface IIMageHolderProps {}
 
@@ -34,12 +35,11 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
     }
   };
 
-  const isImageSpecified = (): boolean => imageUrl.trim().length > 0;
+  const isImageLoaded = (): boolean => imageUrl.trim().length > 0;
 
-  const isImageLoaded = (): boolean =>
-    imageUrl.trim().length > 0 && isImageUrlError !== true;
 
   const resetImage = (): void => {
+    setTags([]);
     setIsImageUrlError(false);
     setImageUrl("");
     setFocusOnUrlBox(true);
@@ -82,7 +82,7 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
     tagCoordinates.X + tagCoordinates.Y > 0;
 
   const showTagFactory = (): boolean =>
-    isImageSpecified() && isTagCoordinatesDefined() && !hasAddedTag;
+    isImageLoaded() && isTagCoordinatesDefined() && !hasAddedTag;
 
   return (
     <>
@@ -100,7 +100,7 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
         ))}
       <div className="box">
         <div>
-          {!isImageSpecified() ? (
+          {!isImageLoaded() ? (
             <ImageUrlBox
               setFocus={focusOnUrlBox}
               onChangeUrl={handleChangeImageUrl}
@@ -114,10 +114,20 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
                 imageUrl={imageUrl}
                 isImageUrlNotFound={isImageUrlError}
               />
-              <ResetImageAction resetImage={resetImage} />
             </>
           )}
         </div>
+      </div>
+      <div className="actions">
+        <ResetImageAction
+          resetImage={resetImage}
+          disabled={!isImageLoaded()}
+        >
+          Change image
+        </ResetImageAction>
+        <SaveToFileAction format="json" tags={tags} imageUrl={imageUrl}>
+          Save to JSON file
+        </SaveToFileAction>
       </div>
     </>
   );
