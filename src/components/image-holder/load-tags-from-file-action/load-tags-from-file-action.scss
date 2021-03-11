@@ -2,6 +2,6 @@ button[disabled] {
   cursor: not-allowed;
 }
 
-input[type=file] {
+input[type="file"]#load-json-file-selector {
   display: none;
 }

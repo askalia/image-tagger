@@ -1,16 +1,15 @@
 import { FC, useState } from "react";
-import { MdCloudUpload } from "react-icons/md";
+import { MdDescription } from "react-icons/md";
 import { Button } from "reactstrap";
-import { SerializableTagsData } from "../../../shared/models/serializable-tag-data.model";
-import { tagService } from "../../../shared/services/tag.service";
+import { imageService } from "../../../shared/services/image.service";
 
-import "./load-tags-from-file-action.scss";
+import "./image-from-local-file.scss";
 
-interface ILoadTagsFromFileActionProps {
-  onFileLoaded: (tagsData: SerializableTagsData) => void;
+interface ILoadImageFromLocalFileProps {
+  onFileLoaded: (imageDataUrl: string) => void;
 }
 
-export const LoadTagsFromFileAction: FC<ILoadTagsFromFileActionProps> = ({
+export const LoadImageFromLocalFileAction: FC<ILoadImageFromLocalFileProps> = ({
   onFileLoaded,
   children,
 }) => {
@@ -21,10 +20,11 @@ export const LoadTagsFromFileAction: FC<ILoadTagsFromFileActionProps> = ({
   };
 
   const handleFile = () => {
-    tagService
-      .loadTagsFromJsonFile(fileInputRef.files[0])
+    console.log("fileInputRef.files[0]  ", fileInputRef.files[0]);
+    imageService
+      .loadImageFromLocalFile(fileInputRef.files[0])
       .then(onFileLoaded)
-      .catch(() => alert("Error while loading the JSON file"))
+      .catch(() => alert("Error while loading the image file"))
       .finally(() => {
         // here is a workaround to allow input:file:onChange() event be fired event though the same file is selected again
         setMountInputFile(true);
@@ -40,7 +40,7 @@ export const LoadTagsFromFileAction: FC<ILoadTagsFromFileActionProps> = ({
         <input
           type="file"
           name="file-selector"
-          id="load-json-file-selector"
+          style={{ display: "none" }}
           ref={(input) => (fileInputRef = input)}
           onChange={handleFile}
         />
@@ -50,7 +50,7 @@ export const LoadTagsFromFileAction: FC<ILoadTagsFromFileActionProps> = ({
         color="primary"
         onClick={onClickFacade}
       >
-        <MdCloudUpload color="white" size={20} />
+        <MdDescription color="white" size={20} />
         <span className="btn-inner--text"> {children}</span>
       </Button>
     </>

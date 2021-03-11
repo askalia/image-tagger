@@ -19,7 +19,7 @@ export const SaveToFileAction: FC<ISaveToFileActionProps> = ({
 }) => (
   <Button
     disabled={tags.length === 0}
-    className="savetofile-action btn-icon btn-3"
+    className="btn-icon btn-3"
     color="primary"
     onClick={() =>
       format === "json" &&

@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useRef, useState } from "react";
-import { MdClear, MdLocalOffer } from "react-icons/md";
+import { MdDeleteForever, MdLocalOffer } from "react-icons/md";
 import { Button, Card, CardBody } from "reactstrap";
 import { Tag } from "../../shared/models/tag.model";
 
@@ -49,7 +49,7 @@ export const TagItem: FC<ITagItemProps> = ({ tag, updateTag, removeTag }) => {
               type="button"
               onClick={() => removeTag(tag?.id)}
             >
-              <MdClear />
+              <MdDeleteForever />
             </Button>
             <div className="input-group-merge input-group tag-legend">
               <div className="input-group-prepend">

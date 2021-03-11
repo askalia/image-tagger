@@ -5,6 +5,7 @@ import { TagCoordinates } from "../../shared/models/tag-coordinates.model";
 import { Tag } from "../../shared/models/tag.model";
 import { TagFactory } from "../tag-factory/tag-factory";
 import { TagItem } from "../tag-item/tag-item";
+import { LoadImageFromLocalFileAction } from "./image-from-local-file/image-from-local-file";
 import "./image-holder.scss";
 import { ImagePreview } from "./image-preview/image-preview";
 import { ImageUrlBox } from "./image-url-box/image-url-box";
@@ -16,7 +17,6 @@ interface IIMageHolderProps {}
 
 export const ImageHolder: FC<IIMageHolderProps> = () => {
   const [tags, setTags] = useState<Tag[]>([]);
-  const [hasAddedTag, setHasAddedTag] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [isImageUrlError, setIsImageUrlError] = useState<boolean>(false);
   const [focusOnUrlBox, setFocusOnUrlBox] = useState<boolean>(true);
@@ -52,12 +52,11 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
 
   const onClickOverImage = (event: MouseEvent) => {
     const { clientX: X, clientY: Y } = event;
+    setUnmountTagFactory(false);
     setTagCoordinates({ X, Y });
-    setHasAddedTag(false);
   };
 
   const addTag = (newTag: Tag) => {
-    setHasAddedTag(true);
     setTags((tags) => [...tags, newTag]);
   };
 
@@ -83,17 +82,27 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
     tagCoordinates.X + tagCoordinates.Y > 0;
 
   const showTagFactory = (): boolean =>
-    isImageLoaded() && isTagCoordinatesDefined() && !hasAddedTag;
+    isImageLoaded() && isTagCoordinatesDefined() && unmountTagFactory !== true;
 
   const onLoadTagsFromFile = ({ imageUrl, tags }: SerializableTagsData) => {
     handleChangeImageUrl(imageUrl);
     setTags(tags);
   };
 
+  const [unmountTagFactory, setUnmountTagFactory] = useState<boolean>(false);
+
+  const onLocalImageLoaded = (imageDataUrl: string) => {
+    handleChangeImageUrl(imageDataUrl);
+  };
+
   return (
     <>
       {showTagFactory() && (
-        <TagFactory coordinates={tagCoordinates} addTag={addTag} />
+        <TagFactory
+          coordinates={tagCoordinates}
+          addTag={addTag}
+          onRemove={() => setUnmountTagFactory(true)}
+        />
       )}
       {tags.length > 0 &&
         tags.map((tag) => (
@@ -107,11 +116,17 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
       <div className="box">
         <div>
           {!isImageLoaded() ? (
-            <ImageUrlBox
-              setFocus={focusOnUrlBox}
-              onChangeUrl={handleChangeImageUrl}
-              onImageTypeNotSupported={onImageTypeNotSupported}
-            />
+            <>
+              <ImageUrlBox
+                setFocus={focusOnUrlBox}
+                onChangeUrl={handleChangeImageUrl}
+                onImageTypeNotSupported={onImageTypeNotSupported}
+              />
+              <p>- OR -</p>
+              <LoadImageFromLocalFileAction onFileLoaded={onLocalImageLoaded}>
+                Pick a file on local disk drive
+              </LoadImageFromLocalFileAction>
+            </>
           ) : (
             <>
               <ImagePreview
