@@ -10,6 +10,28 @@ const isImageExtensionSupported = (imageUrl: string): boolean => {
     return IMAGES_SUPPORTED_EXTENSIONS.includes(fileExtension?.toLowerCase())
 }
 
+const loadImageFromLocalFile = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {        
+        function onError(error: any) {
+            reader?.removeEventListener("onerror", onError);
+            reject(error)
+        };
+        function onLoad() {
+            reader?.removeEventListener("onload", onLoad);
+            reader?.removeEventListener("onerror", onError);            
+            if (typeof reader?.result === "string"){                
+                const imageDataUrl = reader?.result;
+                resolve(imageDataUrl)                
+            }            
+        }
+        const reader: FileReader = new FileReader();
+        reader.onerror = onError;
+        reader.onload = onLoad;          
+        reader.readAsDataURL(file)
+    });
+}
+
 export const imageService = {
-    isImageExtensionSupported
+    isImageExtensionSupported,
+    loadImageFromLocalFile
 }

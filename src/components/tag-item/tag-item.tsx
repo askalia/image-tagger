@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useRef, useState } from "react";
-import { MdClear, MdLocalOffer } from "react-icons/md";
+import { MdDeleteForever, MdLocalOffer } from "react-icons/md";
 import { Button, Card, CardBody } from "reactstrap";
 import { Tag } from "../../shared/models/tag.model";
 
@@ -21,11 +21,12 @@ export const TagItem: FC<ITagItemProps> = ({ tag, updateTag, removeTag }) => {
 
   const validateTagForUpdate = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
+        
       setEditMode(false);
       updateTag(tag.id, {
         description,
-        widthPx: tagRef?.current?.screenWidth,
-        heightPx: tagRef?.current?.screenHeight,
+        widthPx: tagRef?.current?.clientWidth +4,
+        heightPx: tagRef?.current?.clientHeight +4,
       });
     }
   };
@@ -49,7 +50,7 @@ export const TagItem: FC<ITagItemProps> = ({ tag, updateTag, removeTag }) => {
               type="button"
               onClick={() => removeTag(tag?.id)}
             >
-              <MdClear />
+              <MdDeleteForever />
             </Button>
             <div className="input-group-merge input-group tag-legend">
               <div className="input-group-prepend">
