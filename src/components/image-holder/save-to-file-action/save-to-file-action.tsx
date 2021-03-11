@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { MdCloudDownload } from "react-icons/md";
+import { MdSave } from "react-icons/md";
 import { Button } from "reactstrap";
 import { Tag } from "../../../shared/models/tag.model";
 import { tagService } from "../../../shared/services/tag.service";
@@ -29,7 +29,7 @@ export const SaveToFileAction: FC<ISaveToFileActionProps> = ({
       )
     }
   >
-    <MdCloudDownload color="white" size={20} />
+    <MdSave color="white" size={20} />
     <span className="btn-inner--text"> {children}</span>
   </Button>
 );

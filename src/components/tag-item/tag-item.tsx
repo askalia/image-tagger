@@ -21,11 +21,12 @@ export const TagItem: FC<ITagItemProps> = ({ tag, updateTag, removeTag }) => {
 
   const validateTagForUpdate = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
+        
       setEditMode(false);
       updateTag(tag.id, {
         description,
-        widthPx: tagRef?.current?.screenWidth,
-        heightPx: tagRef?.current?.screenHeight,
+        widthPx: tagRef?.current?.clientWidth +4,
+        heightPx: tagRef?.current?.clientHeight +4,
       });
     }
   };

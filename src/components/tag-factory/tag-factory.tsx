@@ -26,8 +26,8 @@ export const TagFactory: FC<ITagFactoryProps> = ({
         id: shortid.generate(),
         X: tagCard?.current?.offsetLeft,
         Y: tagCard?.current?.offsetTop,
-        widthPx: tagCard?.current?.screenWidth,
-        heightPx: tagCard?.current?.screenHeight,
+        widthPx: tagCard?.current?.clientWidth + 4,
+        heightPx: tagCard?.current?.clientHeight + 4,
         description: (event.target as HTMLInputElement).value,
       });
     }
@@ -37,7 +37,7 @@ export const TagFactory: FC<ITagFactoryProps> = ({
     <>
       <div>
         <Card
-        className="tag-factory"
+          className="tag-factory"
           innerRef={tagCard}
           style={{
             top: coordinates.Y + "px",
