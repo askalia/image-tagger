@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react";
+import { ChangeEvent, FC, ReactNode, useRef, useState } from "react";
 import { MdClear, MdLocalOffer } from "react-icons/md";
 import { Button, Card, CardBody } from "reactstrap";
 import { Tag } from "../../shared/models/tag.model";
@@ -12,7 +12,7 @@ export interface ITagItemProps {
 }
 
 export const TagItem: FC<ITagItemProps> = ({ tag, updateTag, removeTag }) => {
-  let tagRef = useRef<any>(null);
+  const tagRef = useRef<any>(null);
 
   const [description, setDescription] = useState<string>(
     tag?.description || ""
@@ -71,7 +71,9 @@ export const TagItem: FC<ITagItemProps> = ({ tag, updateTag, removeTag }) => {
                 type="text"
                 className="form-control"
                 onClick={() => setEditMode(true)}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(event: ChangeEvent) =>
+                  setDescription((event.target as HTMLInputElement).value)
+                }
                 onKeyPress={(event: unknown) =>
                   validateTagForUpdate(event as KeyboardEvent)
                 }
