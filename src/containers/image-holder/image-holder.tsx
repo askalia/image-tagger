@@ -1,24 +1,22 @@
 import { FC, SyntheticEvent, useState } from "react";
-import shortid from "shortid";
 import { SerializableTagsData } from "../../shared/models/serializable-tag-data.model";
 import { TagCoordinates } from "../../shared/models/tag-coordinates.model";
 import { Tag } from "../../shared/models/tag.model";
-import { TagFactory } from "../tag-factory/tag-factory";
-import { TagItem } from "../tag-item/tag-item";
-import { LoadImageFromLocalFileAction } from "./image-from-local-file/image-from-local-file";
+import { TagItem } from "../../components/tag-item/tag-item";
+import { LoadImageFromLocalFileAction } from "../../components/image-from-local-file/image-from-local-file";
 import "./image-holder.scss";
-import { ImagePreview } from "./image-preview/image-preview";
-import { ImageUrlBox } from "./image-url-box/image-url-box";
-import { LoadTagsFromFileAction } from "./load-tags-from-file-action/load-tags-from-file-action";
-import { ResetImageAction } from "./reset-image-action/reset-image-action";
-import { SaveToFileAction } from "./save-to-file-action/save-to-file-action";
+import { ImagePreview } from "../../components/image-preview/image-preview";
+import { ImageUrlBox } from "../../components/image-url-box/image-url-box";
+import { LoadTagsFromFileAction } from "../../components/call-to-actions/load-tags-from-file-action/load-tags-from-file-action";
+import { ResetImageAction } from "../../components/call-to-actions/reset-image-action/reset-image-action";
+import { SaveToFileAction } from "../../components/save-to-file-action/save-to-file-action";
+import { TagsList } from "../../components/tags-list/tags-list";
 
 interface IIMageHolderProps {}
 
 export const ImageHolder: FC<IIMageHolderProps> = () => {
   const [tags, setTags] = useState<Tag[]>([]);
   const [hasAddedTag, setHasAddedTag] = useState<boolean>(false);
-
   const [imageUrl, setImageUrl] = useState<string>("");
   const [isImageUrlError, setIsImageUrlError] = useState<boolean>(false);
   const [focusOnUrlBox, setFocusOnUrlBox] = useState<boolean>(true);
@@ -57,13 +55,11 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
     setUnmountTagFactory(false);
     setTagCoordinates({ X, Y });
     setHasAddedTag(false);
-
   };
 
   const addTag = (newTag: Tag) => {
     setTags((tags) => [...tags, newTag]);
     setHasAddedTag(true);
-
   };
 
   const updateTag = (tagId: Tag["id"], tagUpdated: Partial<Tag>) => {
@@ -88,7 +84,10 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
     tagCoordinates.X + tagCoordinates.Y > 0;
 
   const showTagFactory = (): boolean =>
-    isImageLoaded() && isTagCoordinatesDefined() && !hasAddedTag && unmountTagFactory !== true;
+    isImageLoaded() &&
+    isTagCoordinatesDefined() &&
+    !hasAddedTag &&
+    unmountTagFactory !== true;
 
   const onLoadTagsFromFile = ({ imageUrl, tags }: SerializableTagsData) => {
     handleChangeImageUrl(imageUrl);
@@ -104,21 +103,17 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
   return (
     <>
       {showTagFactory() && (
-        <TagFactory
+        <TagItem
           coordinates={tagCoordinates}
           addTag={addTag}
-          onRemove={() => setUnmountTagFactory(true)}
+          updateTag={updateTag}
+          removeTag={removeTag}
+          removeFactory={() => setUnmountTagFactory(true)}
         />
       )}
-      {tags.length > 0 &&
-        tags.map((tag) => (
-          <TagItem
-            tag={tag}
-            key={shortid.generate()}
-            updateTag={updateTag}
-            removeTag={removeTag}
-          />
-        ))}
+      {tags.length > 0 && (
+        <TagsList tags={tags} updateTag={updateTag} removeTag={removeTag} />
+      )}
       <div className="box">
         <div>
           {!isImageLoaded() ? (
@@ -134,14 +129,12 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
               </LoadImageFromLocalFileAction>
             </>
           ) : (
-            <>
-              <ImagePreview
-                onClickOverImage={onClickOverImage}
-                onImageError={handleImageError}
-                imageUrl={imageUrl}
-                isImageUrlNotFound={isImageUrlError}
-              />
-            </>
+            <ImagePreview
+              onClickOverImage={onClickOverImage}
+              onImageError={handleImageError}
+              imageUrl={imageUrl}
+              isImageUrlNotFound={isImageUrlError}
+            />
           )}
         </div>
       </div>
@@ -149,7 +142,12 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
         <ResetImageAction resetImage={resetImage} disabled={!isImageLoaded()}>
           Change image
         </ResetImageAction>
-        <SaveToFileAction format="json" tags={tags} imageUrl={imageUrl}>
+        <SaveToFileAction
+          format="json"
+          tags={tags}
+          imageUrl={imageUrl}
+          disabled={tags.length === 0}
+        >
           Save to a JSON file
         </SaveToFileAction>
         <LoadTagsFromFileAction onFileLoaded={onLoadTagsFromFile}>
