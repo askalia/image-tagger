@@ -15,7 +15,7 @@ export const SaveToFileAction: FC<ISaveToFileActionProps> = ({
   format,
   tags,
   imageUrl,
-  children
+  children,
 }) => (
   <Button
     disabled={tags.length === 0}
@@ -24,13 +24,12 @@ export const SaveToFileAction: FC<ISaveToFileActionProps> = ({
     onClick={() =>
       format === "json" &&
       tagService?.saveToJsonFile(
-        imageUrl,
-        tags,
+        { imageUrl, tags },
         `image-tagger-${String(new Date().getTime())}.json`
       )
     }
   >
-    <MdCloudDownload color="white" />
+    <MdCloudDownload color="white" size={20} />
     <span className="btn-inner--text"> {children}</span>
   </Button>
 );

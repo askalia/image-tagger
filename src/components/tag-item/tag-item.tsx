@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, ReactNode, useRef, useState } from "react";
+import { ChangeEvent, FC, useRef, useState } from "react";
 import { MdClear, MdLocalOffer } from "react-icons/md";
 import { Button, Card, CardBody } from "reactstrap";
 import { Tag } from "../../shared/models/tag.model";
@@ -28,13 +28,6 @@ export const TagItem: FC<ITagItemProps> = ({ tag, updateTag, removeTag }) => {
         heightPx: tagRef?.current?.screenHeight,
       });
     }
-  };
-
-  const handleMouseUp = () => {
-    updateTag(tag.id, {
-      widthPx: tagRef?.current?.screenWidth,
-      heightPx: tagRef?.current?.screenHeight,
-    });
   };
 
   return (
