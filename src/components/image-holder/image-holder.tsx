@@ -1,5 +1,6 @@
 import { FC, SyntheticEvent, useState } from "react";
 import shortid from "shortid";
+import { SerializableTagsData } from "../../shared/models/serializable-tag-data.model";
 import { TagCoordinates } from "../../shared/models/tag-coordinates.model";
 import { Tag } from "../../shared/models/tag.model";
 import { TagFactory } from "../tag-factory/tag-factory";
@@ -7,6 +8,7 @@ import { TagItem } from "../tag-item/tag-item";
 import "./image-holder.scss";
 import { ImagePreview } from "./image-preview/image-preview";
 import { ImageUrlBox } from "./image-url-box/image-url-box";
+import { LoadTagsFromFileAction } from "./load-tags-from-file-action/load-tags-from-file-action";
 import { ResetImageAction } from "./reset-image-action/reset-image-action";
 import { SaveToFileAction } from "./save-to-file-action/save-to-file-action";
 
@@ -36,7 +38,6 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
   };
 
   const isImageLoaded = (): boolean => imageUrl.trim().length > 0;
-
 
   const resetImage = (): void => {
     setTags([]);
@@ -84,6 +85,11 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
   const showTagFactory = (): boolean =>
     isImageLoaded() && isTagCoordinatesDefined() && !hasAddedTag;
 
+  const onLoadTagsFromFile = ({ imageUrl, tags }: SerializableTagsData) => {
+    handleChangeImageUrl(imageUrl);
+    setTags(tags);
+  };
+
   return (
     <>
       {showTagFactory() && (
@@ -119,15 +125,15 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
         </div>
       </div>
       <div className="actions">
-        <ResetImageAction
-          resetImage={resetImage}
-          disabled={!isImageLoaded()}
-        >
+        <ResetImageAction resetImage={resetImage} disabled={!isImageLoaded()}>
           Change image
         </ResetImageAction>
         <SaveToFileAction format="json" tags={tags} imageUrl={imageUrl}>
-          Save to JSON file
+          Save to a JSON file
         </SaveToFileAction>
+        <LoadTagsFromFileAction onFileLoaded={onLoadTagsFromFile}>
+          Load from a JSON file
+        </LoadTagsFromFileAction>
       </div>
     </>
   );

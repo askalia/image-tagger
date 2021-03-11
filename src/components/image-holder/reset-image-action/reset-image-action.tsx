@@ -19,7 +19,7 @@ export const ResetImageAction: FC<IResetImageActionProps> = ({
     onClick={resetImage}
     disabled={disabled}
   >
-    <MdCached color="white" />
+    <MdCached color="white" size={20} />
     <span className="btn-inner--text"> {children}</span>
   </Button>
 );
