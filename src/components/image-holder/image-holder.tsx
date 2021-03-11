@@ -17,6 +17,8 @@ interface IIMageHolderProps {}
 
 export const ImageHolder: FC<IIMageHolderProps> = () => {
   const [tags, setTags] = useState<Tag[]>([]);
+  const [hasAddedTag, setHasAddedTag] = useState<boolean>(false);
+
   const [imageUrl, setImageUrl] = useState<string>("");
   const [isImageUrlError, setIsImageUrlError] = useState<boolean>(false);
   const [focusOnUrlBox, setFocusOnUrlBox] = useState<boolean>(true);
@@ -54,10 +56,14 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
     const { clientX: X, clientY: Y } = event;
     setUnmountTagFactory(false);
     setTagCoordinates({ X, Y });
+    setHasAddedTag(false);
+
   };
 
   const addTag = (newTag: Tag) => {
     setTags((tags) => [...tags, newTag]);
+    setHasAddedTag(true);
+
   };
 
   const updateTag = (tagId: Tag["id"], tagUpdated: Partial<Tag>) => {
@@ -82,7 +88,7 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
     tagCoordinates.X + tagCoordinates.Y > 0;
 
   const showTagFactory = (): boolean =>
-    isImageLoaded() && isTagCoordinatesDefined() && unmountTagFactory !== true;
+    isImageLoaded() && isTagCoordinatesDefined() && !hasAddedTag && unmountTagFactory !== true;
 
   const onLoadTagsFromFile = ({ imageUrl, tags }: SerializableTagsData) => {
     handleChangeImageUrl(imageUrl);
