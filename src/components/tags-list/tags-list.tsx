@@ -18,7 +18,7 @@ export const TagsList: FC<ITagsListProps> = ({
     {(tags || []).map((tag) => (
       <TagItem
         tag={tag}
-        key={shortid.generate()}
+        key={tag?.id || shortid.generate()}
         updateTag={updateTag}
         removeTag={removeTag}
       />

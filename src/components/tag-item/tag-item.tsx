@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useRef, useState } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { MdDeleteForever, MdLocalOffer } from "react-icons/md";
 import { Button, Card, CardBody } from "reactstrap";
 import shortid from "shortid";
@@ -22,7 +22,7 @@ export const TagItem: FC<ITagItemProps> = ({
   removeTag,
   addTag,
   coordinates,
-  removeFactory
+  removeFactory,
 }) => {
   const tagRef = useRef<any>(null);
 
@@ -43,11 +43,12 @@ export const TagItem: FC<ITagItemProps> = ({
 
   const validateTagForUpdate = () => {
     setEditMode(false);
-    tag?.id && updateTag(tag?.id, {
-      description,
-      widthPx: tagRef?.current?.clientWidth + 4,
-      heightPx: tagRef?.current?.clientHeight + 4,
-    });
+    tag?.id &&
+      updateTag(tag?.id, {
+        description,
+        widthPx: tagRef?.current?.clientWidth + 4,
+        heightPx: tagRef?.current?.clientHeight + 4,
+      });
   };
 
   const validateTagForCreation = (event: KeyboardEvent) => {
@@ -58,6 +59,60 @@ export const TagItem: FC<ITagItemProps> = ({
       widthPx: tagRef?.current?.clientWidth + 4,
       heightPx: tagRef?.current?.clientHeight + 4,
       description: (event.target as HTMLInputElement).value,
+    });
+  };
+
+  useEffect(() => {
+    initResizeListener();
+  });
+
+  const initResizeListener = () => {
+    let lock = false;
+    const resizableElement = tagRef.current;
+    resizableElement.addEventListener("resize", (event: any) => {
+      if (lock === false) {
+        lock = true;
+        if (
+          tagRef.current.clientWidth === 0 ||
+          tagRef.current.clientHeight === 0
+        ) {
+          return;
+        }
+        setTimeout(() => {
+          updateTag(tag?.id, {
+            widthPx: tagRef.current.clientWidth,
+            heightPx: tagRef.current.clientHeight,
+          });
+          lock = false;
+        }, 500);
+      }
+    });
+    function checkResize(mutations: any) {
+      const el = mutations[0].target;
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+
+      const isChange = mutations
+        .map((m: any) => `${m.oldValue}`)
+        .some(
+          (prev: any) =>
+            prev.indexOf(`width: ${w}px`) === -1 ||
+            prev.indexOf(`height: ${h}px`) === -1
+        );
+
+      if (!isChange) {
+        return;
+      }
+      const event = new CustomEvent("resize", {
+        detail: { width: w, height: h },
+      });
+      el.dispatchEvent(event);
+    }
+    const observer = new MutationObserver(checkResize);
+    observer.observe(resizableElement, {
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ["style"],
     });
   };
 
@@ -72,14 +127,16 @@ export const TagItem: FC<ITagItemProps> = ({
             width: tag?.widthPx,
             height: tag?.heightPx,
           }}
-          className={ isFactory() ? 'tag-factory' : ''}
+          className={isFactory() ? "tag-factory" : ""}
         >
           <CardBody>
             <Button
               className="remove-tag btn-icon btn-2"
               color="danger"
               type="button"
-              onClick={() => (!isFactory()  ? removeTag(tag?.id) : removeFactory?.())}
+              onClick={() =>
+                !isFactory() ? removeTag(tag?.id) : removeFactory?.()
+              }
             >
               <MdDeleteForever />
             </Button>

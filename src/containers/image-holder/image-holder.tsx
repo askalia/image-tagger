@@ -63,17 +63,16 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
   };
 
   const updateTag = (tagId: Tag["id"], tagUpdated: Partial<Tag>) => {
-    const foundTag = tags.find((currentTag) => currentTag?.id === tagId);
-    if (foundTag) {
-      const tagsUpdated = [
-        ...tags.filter((currentTag) => currentTag.id !== tagId),
-        {
-          ...foundTag,
+    const tagsListUpdated = tags.map((currentTag) => {
+      if (currentTag?.id === tagId) {
+        return {
+          ...currentTag,
           ...tagUpdated,
-        } as Tag,
-      ];
-      setTags(tagsUpdated);
-    }
+        };
+      }
+      return currentTag;
+    });
+    setTags(tagsListUpdated);
   };
 
   const removeTag = (tagId: Tag["id"]) => {
