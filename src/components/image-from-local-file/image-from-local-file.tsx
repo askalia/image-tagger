@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { MdDescription } from "react-icons/md";
 import { Button } from "reactstrap";
-import { imageService } from "../../../shared/services/image.service";
+import { imageService } from "../../shared/services/image.service";
 
 import "./image-from-local-file.scss";
 

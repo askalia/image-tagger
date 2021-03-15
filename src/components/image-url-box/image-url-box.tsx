@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect } from "react";
-import { imageService } from "../../../shared/services/image.service";
+import { imageService } from "../../shared/services/image.service";
 
 interface IImageUrlBoxProps {
   setFocus: boolean;
