@@ -132,7 +132,6 @@ export const ImageHolder: FC<IIMageHolderProps> = () => {
               onClickOverImage={onClickOverImage}
               onImageError={handleImageError}
               imageUrl={imageUrl}
-              isImageUrlNotFound={isImageUrlError}
             />
           )}
         </div>

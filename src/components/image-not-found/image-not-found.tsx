@@ -9,4 +9,4 @@ interface IImageNotFoundProps {
 
 export const ImageNotFound: FC<IImageNotFoundProps> = ({
   coverImageUrlNotFound,
-}) => <img src={coverImageUrlNotFound || imageUrl} alt="not found" />;
+}) => <img src={coverImageUrlNotFound || imageUrl} data-cy="image-not-found" alt="not found" />;

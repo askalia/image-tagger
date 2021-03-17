@@ -40,6 +40,7 @@ export const LoadTagsFromFileAction: FC<ILoadTagsFromFileActionProps> = ({
         <input
           type="file"
           name="file-selector"
+          data-cy="load-json-file"
           id="load-json-file-selector"
           ref={(input) => (fileInputRef = input)}
           onChange={handleFile}
@@ -49,6 +50,7 @@ export const LoadTagsFromFileAction: FC<ILoadTagsFromFileActionProps> = ({
         className="btn-icon btn-3"
         color="primary"
         onClick={onClickFacade}
+        data-cy="load-json-file-action"
       >
         <MdCloudUpload color="white" size={20} />
         <span className="btn-inner--text"> {children}</span>

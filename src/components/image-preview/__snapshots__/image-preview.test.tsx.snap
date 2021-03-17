@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Animal should image src tbe this injected as a props 1`] = `ShallowWrapper {}`;
+
+exports[`Hello, Enzyme! renders snapshots, too 1`] = `
+<div>
+  <h1>
+    Hello, Enzyme!
+  </h1>
+</div>
+`;

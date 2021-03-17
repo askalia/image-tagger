@@ -62,10 +62,11 @@ export const TagItem: FC<ITagItemProps> = ({
     });
   };
 
-  useEffect(() => {
-    initResizeListener();
-  });
-
+  /*
+    useEffect(() => {
+      initResizeListener();
+    });
+*/
   const initResizeListener = () => {
     let lock = false;
     const resizableElement = tagRef.current;
@@ -120,6 +121,7 @@ export const TagItem: FC<ITagItemProps> = ({
     <>
       <div>
         <Card
+          id={`tag-${tag?.id}`}
           innerRef={tagRef}
           style={{
             top: (isFactory() ? coordinates?.Y : tag?.Y) + "px",

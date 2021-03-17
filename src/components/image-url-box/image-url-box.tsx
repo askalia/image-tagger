@@ -32,10 +32,14 @@ export const ImageUrlBox: FC<IImageUrlBoxProps> = ({
     <input
       className="form-control"
       type="search"
+      data-cy="image-url-box"
       size={4}
       ref={(input) => (urlBox = input)}
       placeholder={placeholder || "Paste URL of the image to be tagged"}
       onChange={(event: ChangeEvent) =>
+        handleChangeUrl((event.target as HTMLInputElement).value)
+      }
+      onBlur={(event: ChangeEvent) =>
         handleChangeUrl((event.target as HTMLInputElement).value)
       }
     />
