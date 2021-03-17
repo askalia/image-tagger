@@ -39,6 +39,7 @@ export const LoadImageFromLocalFileAction: FC<ILoadImageFromLocalFileProps> = ({
       {mountInputFile === true && (
         <input
           type="file"
+          data-cy="load-image-from-local-file"
           name="file-selector"
           style={{ display: "none" }}
           ref={(input) => (fileInputRef = input)}
@@ -49,6 +50,7 @@ export const LoadImageFromLocalFileAction: FC<ILoadImageFromLocalFileProps> = ({
         className="btn-icon btn-3"
         color="primary"
         onClick={onClickFacade}
+        data-cy="load-image-from-local-file-action"
       >
         <MdDescription color="white" size={20} />
         <span className="btn-inner--text"> {children}</span>
